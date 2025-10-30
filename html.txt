@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Posture Monitoring System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .animate-pulse-fast {
+            animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div class="min-h-screen p-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="bg-slate-950/50 backdrop-blur border border-slate-700/50 rounded-lg p-4 mb-4">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">AI Posture Monitoring System</h1>
+                            <p class="text-sm text-slate-400">Real-time Security Personnel Analysis</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span class="text-sm font-mono" id="currentTime"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <!-- Main Camera Feed -->
+                <div class="lg:col-span-2">
+                    <div class="bg-slate-950/50 backdrop-blur border border-slate-700/50 rounded-lg overflow-hidden">
+                        <div class="bg-slate-900/80 px-4 py-2 border-b border-slate-700/50 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                                <span class="text-sm font-mono text-slate-300">CAM-01 | Control Room Alpha</span>
+                            </div>
+                            <span class="text-xs text-slate-400 font-mono" id="currentDate"></span>
+                        </div>
+                        
+                        <!-- Camera View -->
+                        <div class="relative aspect-video bg-gradient-to-br from-slate-900 to-slate-800">
+                            <!-- Simulated Control Room Scene -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="relative w-full h-full">
+                                    <!-- Background -->
+                                    <div class="absolute inset-0 bg-gradient-to-b from-slate-800/40 to-slate-900/60"></div>
+                                    
+                                    <!-- Desk Area -->
+                                    <div class="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                                    
+                                    <!-- Monitor Glow Effects -->
+                                    <div class="absolute top-1/4 left-1/4 w-32 h-24 bg-cyan-500/10 blur-3xl"></div>
+                                    <div class="absolute top-1/4 right-1/4 w-32 h-24 bg-blue-500/10 blur-3xl"></div>
+                                    
+                                    <!-- Person Silhouette -->
+                                    <div id="personSilhouette" class="absolute bottom-1/4 left-1/2 -translate-x-1/2 transition-all duration-1000">
+                                        <!-- Head -->
+                                        <div id="personHead" class="relative w-20 h-20 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full transition-transform duration-1000">
+                                            <div class="absolute inset-2 bg-slate-800/50 rounded-full"></div>
+                                        </div>
+                                        
+                                        <!-- Body -->
+                                        <div class="w-32 h-40 bg-gradient-to-b from-slate-600 to-slate-700 -mt-2 mx-auto rounded-t-3xl">
+                                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-slate-500/30 to-transparent"></div>
+                                        </div>
+                                        
+                                        <!-- AI Detection Overlay -->
+                                        <div class="absolute -inset-8 border-2 border-cyan-400/60 rounded-lg animate-pulse">
+                                            <div class="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
+                                            <div class="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400"></div>
+                                            <div class="absolute -bottom-2 -left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400"></div>
+                                            <div class="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+                                        </div>
+                                        
+                                        <!-- Skeletal Points -->
+                                        <div class="absolute top-4 left-1/2 w-2 h-2 bg-cyan-400 rounded-full -translate-x-1/2"></div>
+                                        <div class="absolute top-24 left-1/2 w-2 h-2 bg-cyan-400 rounded-full -translate-x-1/2"></div>
+                                        <div class="absolute top-32 left-8 w-2 h-2 bg-cyan-400 rounded-full"></div>
+                                        <div class="absolute top-32 right-8 w-2 h-2 bg-cyan-400 rounded-full"></div>
+                                    </div>
+                                    
+                                    <!-- Alert Overlay -->
+                                    <div id="alertOverlay" class="absolute top-4 right-4 bg-red-500/90 backdrop-blur px-4 py-2 rounded-lg border border-red-400 hidden animate-pulse-fast">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                            </svg>
+                                            <span class="text-white font-semibold text-sm">Alert: Drowsiness Detected</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Status Indicator -->
+                                    <div class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur px-3 py-2 rounded border border-slate-700">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                            </svg>
+                                            <span class="text-xs text-slate-300">AI Detection Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar - Analytics -->
+                <div class="space-y-4">
+                    <!-- Status Card -->
+                    <div class="bg-slate-950/50 backdrop-blur border border-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Detection Status</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-400">Current Posture</span>
+                                <span id="postureStatus" class="text-sm font-semibold px-2 py-1 rounded bg-green-500/20 text-green-400">
+                                    Normal
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-400">Confidence</span>
+                                <span id="confidenceValue" class="text-sm font-semibold text-cyan-400">95%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-2">
+                                <div id="confidenceBar" class="bg-cyan-400 h-2 rounded-full transition-all duration-500" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert Log -->
+                    <div class="bg-slate-950/50 backdrop-blur border border-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Recent Alerts</h3>
+                        <div id="alertLog" class="space-y-2 text-xs">
+                            <div class="bg-slate-800/50 border border-slate-700/50 rounded p-2">
+                                <div class="flex items-start gap-2">
+                                    <svg class="w-3 h-3 text-cyan-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                    </svg>
+                                    <div>
+                                        <p class="text-slate-300">System Active</p>
+                                        <p class="text-slate-500">Monitoring personnel</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
